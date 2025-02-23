@@ -1,0 +1,58 @@
+# version: 2.1
+
+# orbs:
+#   aws-cli: circleci/aws-cli@3.1
+
+# jobs:
+#   test:
+#     docker:
+#       - image: cimg/python:3.9
+#     steps:
+#       - checkout
+#       - restore_cache:
+#           keys:
+#             - v1-deps-{{ .Branch }}-{{ checksum "requirements.txt" }}
+#             - v1-deps-{{ .Branch }}
+#       - run:
+#           name: Install Dependencies
+#           command: |
+#             python -m venv venv
+#             . venv/bin/activate
+#             pip install -r requirements.txt
+#       - save_cache:
+#           key: v1-deps-{{ .Branch }}-{{ checksum "requirements.txt" }}
+#           paths:
+#             - "venv"
+#       - run:
+#           name: Run Tests
+#           command: |
+#             . venv/bin/activate
+#             pytest
+
+#   deploy:
+#     docker:
+#       - image: cimg/python:3.9
+#     steps:
+#       - checkout
+#       - aws-cli/setup
+#       - run:
+#           name: Deploy to Lambda
+#           command: |
+#             pip install --target ./package -r requirements.txt
+#             cd package
+#             zip -r ../lambda_function.zip .
+#             cd ..
+#             zip -g lambda_function.zip -r app
+#             aws lambda update-function-code --function-name ${AWS_LAMBDA_FUNCTION_NAME} --zip-file fileb://lambda_function.zip
+
+# workflows:
+#   version: 2
+#   test-and-deploy:
+#     jobs:
+#       - test
+#       - deploy:
+#           requires:
+#             - test
+#           filters:
+#             branches:
+#               # only: main
