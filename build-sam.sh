@@ -21,9 +21,15 @@ echo "🧹 Cleaning up package..."
 find . -name "*.pyc" -delete
 find . -name "__pycache__" -delete
 
-# Flatten the dependencies to ensure everything is packaged correctly for Lambda
+# # Flatten the dependencies to ensure everything is packaged correctly for Lambda
+# echo "📦 Flattening dependencies..."
+# cp -r ./* .  # Copy the dependencies to the build directory
+
+# Flatten the dependencies (avoid copying the same files multiple times)
 echo "📦 Flattening dependencies..."
-cp -r ./* .  # Copy the dependencies to the build directory
+for dir in $(find . -type d); do
+  cp -r $dir/* . 2>/dev/null || true  # Avoid errors if files already exist
+done
 
 # Remove unnecessary files after installation
 rm -rf ./*.dist-info
