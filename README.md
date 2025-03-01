@@ -55,13 +55,28 @@ Set the following in CircleCI project settings:
 - `AWS_LAMBDA_FUNCTION_NAME`
 - `OPENAI_API_KEY`
 
-## API Endpoints
 
-- `GET /health`: Health check endpoint
-- `POST /generate`: Generate AI response
-  - Request body: `{"prompt": "Your prompt here"}`
-  - Response: `{"generated_text": "AI generated response"}`
+First test the app.py with the get request
 
-## License
 
-MIT
+Then add the OpenAI and generate option. Test it with this
+
+
+curl -X 'POST' 'http://127.0.0.1:8000/generate' \
+-H 'Content-Type: application/json' \
+-d '{"prompt": "Tell me a fun fact about AI"}'
+
+curl -X POST https://yjiuls9mh4.execute-api.eu-central-1.amazonaws.com/dev/generate \
+     -H "Content-Type: application/json" \
+     -d '{"prompt": "Tell me a joke!"}'
+
+Add Magnum to handle lambda
+
+
+# Secrets
+
+
+aws secretsmanager create-secret \
+    --name openai/api_key \
+    --description "OpenAI API Key for GenAI API (Staging)" \
+    --secret-string '{"OPENAI_API_KEY":"YOUR_ACTUAL_API_KEY"}'

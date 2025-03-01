@@ -1,0 +1,73 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: GenAI API with FastAPI and Lambda
+
+# Global variables
+Globals:
+  Function: # Lambda function resources in the template
+    Timeout: 30
+    MemorySize: 256
+    Runtime: python3.11
+    Architectures:
+      - x86_64
+    Environment:
+      Variables:
+        OPENAI_API_KEY_SECRET_ARN: !Sub 'arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:openai/api_key-*'
+  Api:
+    EndpointConfiguration: REGIONAL
+    Cors:
+      AllowMethods: "'*'"
+      AllowHeaders: "'Content-Type,Authorization'"
+      AllowOrigin: "'*'"
+
+# AWS resources that will be created
+Resources:
+  # API Gateway
+  GenAIApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: dev
+      EndpointConfiguration: REGIONAL
+      Cors:
+        AllowMethods: "'*'"
+        AllowHeaders: "'Content-Type,Authorization'"
+        AllowOrigin: "'*'"
+
+  # Lambda function
+  GenAIFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./ # Specifies that the code for this function is located in the current directory
+      Handler: main.handler
+      Description: FastAPI GenAI service using OpenAI API
+      Policies:
+        - AWSLambdaBasicExecutionRole
+        - Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Action:
+                - secretsmanager:GetSecretValue
+              Resource: !Sub 'arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:openai/api_key-*'
+
+      Environment:
+        Variables:
+          OPENAI_API_KEY_SECRET_ARN: !Sub 'arn:aws:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:openai/api_key-*'    
+      
+      Events:
+        RootPath:
+          Type: Api
+          Properties:
+            RestApiId: !Ref GenAIApi
+            Path: /
+            Method: ANY
+        ProxyPath:
+          Type: Api
+          Properties:
+            RestApiId: !Ref GenAIApi
+            Path: /{proxy+}
+            Method: ANY
+
+Outputs:
+  GenAIApiEndpoint:
+    Description: API Gateway endpoint URL for the GenAI service
+    Value: !Sub 'https://${GenAIApi}.execute-api.${AWS::Region}.amazonaws.com/dev/'

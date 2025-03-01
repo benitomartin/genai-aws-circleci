@@ -169,3 +169,6 @@ cython_debug/
 
 # PyPI configuration file
 .pypirc
+TEMPLATE_YAML.md
+.aws-sam/
+samconfig.toml

@@ -1,14 +1,27 @@
 from fastapi.testclient import TestClient
-from app.main import app
+from main import app
+import pytest
 
-client = TestClient(app)
 
-def test_health_check():
-    response = client.get("/health")
+@pytest.fixture
+def client():
+    """Fixture for FastAPI test client"""
+    return TestClient(app)
+
+
+def test_root(client):
+    """Test the root endpoint"""
+    response = client.get("/")
     assert response.status_code == 200
-    assert response.json() == {"status": "healthy"}
+    assert response.json() == {"message": "Welcome to the GenAI API"}
 
-def test_generate_endpoint():
-    response = client.post("/generate", json={"prompt": "Hello, how are you?"})
+
+def test_generate_text(client):
+    """Test the generate endpoint"""
+    
+    # Test with a sample prompt
+    response = client.post("/generate", json={"prompt": "Tell me a joke"})
+    
+    # Assert the status code and the response content
     assert response.status_code == 200
-    assert "generated_text" in response.json()
+    assert "response" in response.json()

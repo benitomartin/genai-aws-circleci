@@ -1,0 +1,50 @@
+name: Deploy to AWS using SAM
+
+on:
+  push:
+    branches:
+      - main  # Trigger deployment on push to the main branch
+  pull_request:
+    branches:
+      - main  # Trigger deployment on PR to the main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout the repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.11'  # Set the Python version you need (same as your Lambda function)
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Set up AWS CLI
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1  # Set to the region of your choice
+
+    - name: Build Lambda Deployment Package
+      run: |
+        chmod +x build-sam.sh
+        ./build-sam.sh
+
+    - name: Build with SAM
+      run: |
+        sam build
+
+    - name: Deploy with SAM
+      run: |
+        sam deploy --no-confirm --stack-name genai-stack --capabilities CAPABILITY_IAM
+
+    - name: Output API Gateway URL
+      run: echo "GenAI API URL: https://$(sam deploy --no-confirm --stack-name genai-stack --capabilities CAPABILITY_IAM)"
