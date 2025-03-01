@@ -1,13 +1,17 @@
 from fastapi.testclient import TestClient
 from main import app
 import pytest
+import os
+from dotenv import load_dotenv
 
+load_dotenv()
+
+OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
 
 @pytest.fixture
 def client():
     """Fixture for FastAPI test client"""
     return TestClient(app)
-
 
 def test_root(client):
     """Test the root endpoint"""
