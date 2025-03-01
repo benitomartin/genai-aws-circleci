@@ -44,7 +44,7 @@ jobs:
 
     - name: Deploy with SAM
       run: |
-        sam deploy --stack-name sam-app
+        sam deploy --stack-name sam-app --resolve-s3  --capabilities CAPABILITY_IAM --region eu-central-1   
 
     - name: Output API Gateway URL
       run: |
