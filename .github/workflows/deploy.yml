@@ -44,7 +44,7 @@ jobs:
 
     - name: Deploy with SAM
       run: |
-        sam deploy --no-confirm --stack-name genai-stack --capabilities CAPABILITY_IAM
+        sam deploy 
 
     - name: Output API Gateway URL
       run: |

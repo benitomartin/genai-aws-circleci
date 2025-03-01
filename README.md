@@ -66,7 +66,7 @@ curl -X 'POST' 'http://127.0.0.1:8000/generate' \
 -H 'Content-Type: application/json' \
 -d '{"prompt": "Tell me a fun fact about AI"}'
 
-curl -X POST https://yjiuls9mh4.execute-api.eu-central-1.amazonaws.com/dev/generate \
+curl -X POST https://blc3kl1p28.execute-api.eu-central-1.amazonaws.com/dev/generate \
      -H "Content-Type: application/json" \
      -d '{"prompt": "Tell me a joke!"}'
 
