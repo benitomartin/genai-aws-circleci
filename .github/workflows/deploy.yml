@@ -47,4 +47,6 @@ jobs:
         sam deploy --no-confirm --stack-name genai-stack --capabilities CAPABILITY_IAM
 
     - name: Output API Gateway URL
-      run: echo "GenAI API URL: https://$(sam deploy --no-confirm --stack-name genai-stack --capabilities CAPABILITY_IAM)"
+      run: |
+        API_URL=$(aws cloudformation describe-stacks --stack-name genai-stack --query "Stacks[0].Outputs[?OutputKey=='GenAIApiEndpoint'].OutputValue" --output text)
+        echo "GenAI API URL: $API_URL"
