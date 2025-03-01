@@ -42,7 +42,8 @@ def get_openai_api_key():
             raise HTTPException(status_code=500, detail="Failed to retrieve API key from Secrets Manager")
     else:
         # Running locally, get key from .env file
-        api_key = os.getenv("OPENAI_API_KEY")
+        api_key = os.environ["OPENAI_API_KEY"]
+
         if not api_key:
             raise HTTPException(status_code=500, detail="OPENAI_API_KEY not found in environment variables")
         return api_key

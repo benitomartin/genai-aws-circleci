@@ -50,3 +50,4 @@ if __name__ == "__main__":
         print(f"Retrieved OpenAI API Key: {api_key}")
     except HTTPException as e:
         print(f"Error: {e.detail}")
+
