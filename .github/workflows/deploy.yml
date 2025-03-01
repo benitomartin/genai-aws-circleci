@@ -48,5 +48,5 @@ jobs:
 
     - name: Output API Gateway URL
       run: |
-        API_URL=$(aws cloudformation describe-stacks --stack-name genai-stack --query "Stacks[0].Outputs[?OutputKey=='GenAIApiEndpoint'].OutputValue" --output text)
+        API_URL=$(aws cloudformation describe-stacks --stack-name sam-app)
         echo "GenAI API URL: $API_URL"
