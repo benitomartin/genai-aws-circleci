@@ -66,7 +66,7 @@ curl -X 'POST' 'http://127.0.0.1:8000/generate' \
 -H 'Content-Type: application/json' \
 -d '{"prompt": "Tell me a fun fact about AI"}'
 
-curl -X POST https://blc3kl1p28.execute-api.eu-central-1.amazonaws.com/dev/generate \
+curl -X POST https://nbj7n5g5q9.execute-api.eu-central-1.amazonaws.com/dev/generate \
      -H "Content-Type: application/json" \
      -d '{"prompt": "Tell me a joke!"}'
 
@@ -80,3 +80,6 @@ aws secretsmanager create-secret \
     --name openai/api_key \
     --description "OpenAI API Key for GenAI API (Staging)" \
     --secret-string '{"OPENAI_API_KEY":"YOUR_ACTUAL_API_KEY"}'
+
+
+uv pip freeze > requirements.txt

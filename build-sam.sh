@@ -6,6 +6,10 @@ echo "🚀 Building Lambda deployment package..."
 BUILD_DIR="$(pwd)/.aws-sam/build/GenAIFunction"
 mkdir -p "$BUILD_DIR"
 
+# Save dependencies to requirements.txt
+echo "📦 Saving dependencies to requirements.txt..."
+uv pip freeze > requirements.txt  
+
 # Copy application code and project configuration
 echo "📋 Copying application code and project configuration..."
 cp main.py requirements.txt "$BUILD_DIR/" 
