@@ -2,11 +2,11 @@ from fastapi.testclient import TestClient
 from main import app
 import pytest
 import os
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 
-load_dotenv()
+# load_dotenv()
 
-OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
+# OPENAI_API_KEY = os.environ["OPENAI_API_KEY"]
 
 @pytest.fixture
 def client():
