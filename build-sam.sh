@@ -8,7 +8,7 @@ mkdir -p "$BUILD_DIR"
 
 # Copy application code and project configuration
 echo "📋 Copying application code and project configuration..."
-cp main.py requirements.txt .env "$BUILD_DIR/" 
+cp main.py requirements.txt "$BUILD_DIR/" 
 # Move to build directory
 cd "$BUILD_DIR"
 
