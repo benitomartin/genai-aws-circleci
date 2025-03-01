@@ -44,7 +44,7 @@ jobs:
 
     - name: Deploy with SAM
       run: |
-        sam deploy 
+        sam deploy --stack-name sam-app
 
     - name: Output API Gateway URL
       run: |
