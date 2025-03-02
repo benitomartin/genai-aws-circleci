@@ -2,6 +2,9 @@ version: 2.1
 
 orbs:
   python: circleci/python@2.1.1
+  aws-sam-serverless: circleci/aws-sam-serverless@6.1.0
+  aws-cli: circleci/aws-cli@5.2.0
+
 
 jobs:
   build-deploy:
@@ -27,13 +30,6 @@ jobs:
           command: |
             pip install awscli  # Install AWS CLI
       
-      - run:
-          name: Install AWS SAM CLI
-          command: |
-            curl -sSL https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip -o sam-installation.sh
-            chmod +x sam-installation.sh
-            sudo ./sam-installation.sh/install  # Install AWS SAM CLI
-
 
       - run:
           name: Build Lambda Deployment Package
@@ -41,14 +37,14 @@ jobs:
             chmod +x build-sam.sh
             ./build-sam.sh  # Execute the build script
 
-      - run:
-          name: Build with SAM
-          command: sam build  # Build with SAM
+      - aws-sam-serverless/sam-build:  # Use the aws-sam-serverless orb to build the SAM package
+          build-dir: ./build  # Customize the build directory if needed
 
-      - run:
-          name: Deploy with SAM
-          command: |
-            sam deploy --stack-name sam-app --resolve-s3 --capabilities CAPABILITY_IAM --region eu-central-1  # Deploy with SAM
+      - aws-sam-serverless/sam-deploy:  # Use the aws-sam-serverless orb to deploy with SAM
+          stack-name: sam-app
+          capabilities: CAPABILITY_IAM
+          region: eu-central-1
+          resolve-s3: true
 
       - run:
           name: Output API Gateway URL
