@@ -20,9 +20,9 @@ jobs:
           profile_name: default
       - sam/install  # Use the SAM orb to install SAM CLI
       
-      # - run:
-      #     name: Install uv
-      #     command: pip install uv  # Install uv package
+      - run:
+          name: Install uv
+          command: pip install uv  # Install uv package
 
       - run:
           name: Install the project
