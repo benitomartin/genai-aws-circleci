@@ -3,6 +3,7 @@ version: 2.1
 orbs:
   python: circleci/python@3.0.0
   aws-cli: circleci/aws-cli@5.2.0
+  sam: circleci/aws-sam-serverless@5.0
 
 jobs:
   build-deploy:
@@ -11,6 +12,10 @@ jobs:
     steps:
       - checkout  # Checkout the code from the repository
 
+      - aws-cli/setup:
+          profile_name: default
+      - sam/install  # Use the SAM orb to install SAM CLI
+      
       - run:
           name: Install uv
           command: pip install uv  # Install uv package
@@ -23,17 +28,17 @@ jobs:
           name: Run tests
           command: uv run pytest  # Run pytest tests
 
-      # Using AWS CLI orb for setup instead of manual installation
-      - aws-cli/setup:
-          profile_name: default
+      # # Using AWS CLI orb for setup instead of manual installation
+      # - aws-cli/setup:
+      #     profile_name: default
       
-      - run:
-          name: Install AWS SAM CLI
-          command: |
-            # Download and install AWS SAM CLI for Linux
-            curl -Lo sam-cli-linux-x86_64.zip https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip
-            unzip sam-cli-linux-x86_64.zip -d sam-installation  # Unzip the SAM CLI
-            sudo ./sam-installation/install  # Run the SAM CLI installation script
+      # - run:
+      #     name: Install AWS SAM CLI
+      #     command: |
+      #       # Download and install AWS SAM CLI for Linux
+      #       curl -Lo sam-cli-linux-x86_64.zip https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip
+      #       unzip sam-cli-linux-x86_64.zip -d sam-installation  # Unzip the SAM CLI
+      #       sudo ./sam-installation/install  # Run the SAM CLI installation script
 
       - run:
           name: Build Lambda Deployment Package
