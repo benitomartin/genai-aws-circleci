@@ -51,26 +51,29 @@ jobs:
 
       - sam/install
 
-
       - run:
-          name: Build with SAM
-          command: sam build  # Build with SAM
+          name: Install Python 3.11
+          command: which python3
+
+      # - run:
+      #     name: Build with SAM
+      #     command: sam build  # Build with SAM
       
-      - run:
-          name: Verify AWS Credentials
-          command: |
-            aws sts get-caller-identity  # Verify AWS credentials are set up correctly
+      # - run:
+      #     name: Verify AWS Credentials
+      #     command: |
+      #       aws sts get-caller-identity  # Verify AWS credentials are set up correctly
 
-      - run:
-          name: Deploy with SAM
-          command: |
-            sam deploy --stack-name sam-app --resolve-s3 --capabilities CAPABILITY_IAM --region eu-central-1  # Deploy with SAM
+      # - run:
+      #     name: Deploy with SAM
+      #     command: |
+      #       sam deploy --stack-name sam-app --resolve-s3 --capabilities CAPABILITY_IAM --region eu-central-1  # Deploy with SAM
 
-      - run:
-          name: Output API Gateway URL
-          command: |
-            API_URL=$(aws cloudformation describe-stacks --stack-name sam-app --region eu-central-1)
-            echo "GenAI API URL: $API_URL"  # Output the API Gateway URL
+      # - run:
+      #     name: Output API Gateway URL
+      #     command: |
+      #       API_URL=$(aws cloudformation describe-stacks --stack-name sam-app --region eu-central-1)
+      #       echo "GenAI API URL: $API_URL"  # Output the API Gateway URL
 
 workflows:
   version: 2
