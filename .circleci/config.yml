@@ -63,7 +63,7 @@ jobs:
 
       - run:
           name: Build with SAM
-          command: sam build --use-container --build-image amazon/aws-sam-cli-build-image-python3.11
+          command: sam build --debug --base-dir .
       
       - run:
           name: Verify AWS Credentials
