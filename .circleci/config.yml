@@ -73,9 +73,9 @@ jobs:
 #             API_URL=$(aws cloudformation describe-stacks --stack-name sam-app --region eu-central-1)
 #             echo "GenAI API URL: $API_URL"  # Output the API Gateway URL
 
-# workflows:
-#   version: 2
-#   deploy:
-#     jobs:
-#       - build-deploy:
-#           context: aws  # Add this to use AWS credentials from CircleCI context
+workflows:
+  version: 2
+  deploy:
+    jobs:
+      - build-deploy:
+          context: aws  # Add this to use AWS credentials from CircleCI context
