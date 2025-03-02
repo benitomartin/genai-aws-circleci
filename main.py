@@ -90,7 +90,7 @@ def get_openai_client():
         return OpenAI(api_key=api_key)
     except HTTPException as e:
         logger.error(f"Failed to initialize OpenAI client: {e.detail}")
-        raise
+        raise  HTTPException(status_code=500, detail="Failed to initialize OpenAI client: " + str(e.detail))
 
 
 @app.get("/")

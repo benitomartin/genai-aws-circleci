@@ -172,3 +172,4 @@ cython_debug/
 TEMPLATE_YAML.md
 .aws-sam/
 samconfig.toml
+app_test.py

@@ -66,7 +66,7 @@ curl -X 'POST' 'http://127.0.0.1:8000/generate' \
 -H 'Content-Type: application/json' \
 -d '{"prompt": "Tell me a fun fact about AI"}'
 
-curl -X POST https://uys0b3jp9h.execute-api.eu-central-1.amazonaws.com/dev/generate \
+curl -X POST https://dmfs4n6y6i.execute-api.eu-central-1.amazonaws.com/dev/generate \
      -H "Content-Type: application/json" \
      -d '{"prompt": "Tell me a joke!"}'
 
@@ -83,5 +83,3 @@ aws secretsmanager create-secret \
 
 
 uv pip freeze > requirements.txt
-
-dd

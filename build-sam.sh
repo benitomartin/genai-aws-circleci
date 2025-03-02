@@ -30,7 +30,6 @@ uv pip install --no-cache-dir -r requirements.txt --target ./
 echo "🧹 Cleaning up package..."
 rm -rf **/*.pyc  # Remove Python bytecode files
 rm -rf **/__pycache__  # Remove __pycache__ directories
-rm -rf **/*.dist-info  # Remove .dist-info directories
 
 
 # Flatten the dependencies (avoid copying the same files multiple times)
