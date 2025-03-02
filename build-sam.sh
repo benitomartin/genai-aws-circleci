@@ -18,7 +18,7 @@ cd "$BUILD_DIR"
 
 # Install dependencies from requirements.txt
 echo "📦 Installing dependencies from requirements.txt..."
-pip install -r requirements.txt --target ./
+pip install --no-cache-dir -r requirements.txt --target ./
 
 # Clean up unnecessary files
 echo "🧹 Cleaning up package..."
