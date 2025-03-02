@@ -1,14 +1,12 @@
 version: 2.1
 
-executors:
-  python-executor:
-    docker:
-      - image: circleci/python:3.11  # Use a Docker image with Python 3.11
-    # working_directory: ~/repo  # Set the working directory to the repository
+orbs:
+  python: circleci/python@2.1.1
 
 jobs:
   build-deploy:
-    executor: python-executor
+    docker:
+      - image: cimg/python:3.11
     steps:
       - checkout  # Checkout the code from the repository
 
