@@ -44,5 +44,5 @@ rm -rf ./*.dist-info
 rm -rf ./*.egg-info
 rm -rf ./bin ./lib  # Remove unnecessary directories from the virtual environment
 
-echo "✅ Build complete! Your Lambda package is ready for deployment."Ste
-echo "You can now run 'sam deploy --guided' to deploy the application."
+echo "✅ Build complete! Your Lambda package is ready for deployment."
+

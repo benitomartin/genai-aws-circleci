@@ -58,7 +58,7 @@ jobs:
       - run:
           name: Output API Gateway URL
           command: |
-            API_URL=$(aws cloudformation describe-stacks --stack-name sam-app)
+            API_URL=$(aws cloudformation describe-stacks --stack-name sam-app -region eu-central-1)
             echo "GenAI API URL: $API_URL"  # Output the API Gateway URL
 
 workflows:
