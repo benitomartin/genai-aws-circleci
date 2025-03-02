@@ -3,7 +3,6 @@ version: 2.1
 orbs:
   python: circleci/python@3.0.0
   aws-cli: circleci/aws-cli@5.2.0
-  sam: circleci/aws-sam-serverless@5.0  # Added SAM Orb
 
 jobs:
   build-deploy:
@@ -15,13 +14,6 @@ jobs:
       - run:
           name: Install uv
           command: curl -LsSf https://astral.sh/uv/install.sh | sh  # Install uv package
-
-      # - run:
-      #   # Use a virtual environment to install dependencies
-      #     command: |
-      #       echo "📦 Setting up virtual environment..."
-      #       uv venv .venv
-      #       source .venv/bin/activate
 
       - run:
           name: Install the project
@@ -35,13 +27,13 @@ jobs:
       - aws-cli/setup:
           profile_name: default
       
-      # - run:
-      #     name: Install AWS SAM CLI
-      #     command: |
-      #       # Download and install AWS SAM CLI for Linux
-      #       curl -Lo sam-cli-linux-x86_64.zip https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip
-      #       unzip sam-cli-linux-x86_64.zip -d sam-installation  # Unzip the SAM CLI
-      #       sudo ./sam-installation/install  # Run the SAM CLI installation script
+      - run:
+          name: Install AWS SAM CLI
+          command: |
+            # Download and install AWS SAM CLI for Linux
+            curl -Lo sam-cli-linux-x86_64.zip https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip
+            unzip sam-cli-linux-x86_64.zip -d sam-installation  # Unzip the SAM CLI
+            sudo ./sam-installation/install  # Run the SAM CLI installation script
 
       - run:
           name: Build Lambda Deployment Package
@@ -49,21 +41,9 @@ jobs:
             chmod +x build-sam.sh
             ./build-sam.sh  # Execute the build script
 
-      # - run:
-      #     name: Install Python 3.11
-      #     command: |
-      #       which python3  # Check Python 3.11 installation
-      #       export PATH="/home/circleci/.pyenv/shims:$PATH"  # Add Python to PATH
-
-      - sam/install
-
-      # - run:
-      #     name: Install Python 3.11
-      #     command: which python3
-
       - run:
           name: Build with SAM
-          command: sam build --debug --base-dir .
+          command: sam build  # Build with SAM
       
       - run:
           name: Verify AWS Credentials
