@@ -83,3 +83,5 @@ aws secretsmanager create-secret \
 
 
 uv pip freeze > requirements.txt
+
+dd
