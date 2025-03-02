@@ -30,18 +30,15 @@ uv pip install --no-cache-dir -r requirements.txt --target ./
 echo "🧹 Cleaning up package..."
 rm -rf **/*.pyc  # Remove Python bytecode files
 rm -rf **/__pycache__  # Remove __pycache__ directories
-
+rm -rf ./*.dist-info
+rm -rf ./*.egg-info
+rm -rf ./bin ./lib  # Remove unnecessary directories from the virtual environment
 
 # Flatten the dependencies (avoid copying the same files multiple times)
 echo "📦 Flattening dependencies..."
 for dir in $(find . -type d); do
   cp -r $dir/* . 2>/dev/null || true  # Avoid errors if files already exist
 done
-
-# Remove unnecessary files after installation
-rm -rf ./*.dist-info
-rm -rf ./*.egg-info
-rm -rf ./bin ./lib  # Remove unnecessary directories from the virtual environment
 
 echo "✅ Build complete! Your Lambda package is ready for deployment."
 
