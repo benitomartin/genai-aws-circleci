@@ -49,21 +49,21 @@ jobs:
             chmod +x build-sam.sh
             ./build-sam.sh  # Execute the build script
 
-      - run:
-          name: Install Python 3.11
-          command: |
-            which python3  # Check Python 3.11 installation
-            export PATH="/home/circleci/.pyenv/shims:$PATH"  # Add Python to PATH
+      # - run:
+      #     name: Install Python 3.11
+      #     command: |
+      #       which python3  # Check Python 3.11 installation
+      #       export PATH="/home/circleci/.pyenv/shims:$PATH"  # Add Python to PATH
 
       - sam/install
 
-      - run:
-          name: Install Python 3.11
-          command: which python3
+      # - run:
+      #     name: Install Python 3.11
+      #     command: which python3
 
       - run:
           name: Build with SAM
-          command: sam build  # Build with SAM
+          command: sam build --use-container --build-image amazon/aws-sam-cli-build-image-python3.11
       
       - run:
           name: Verify AWS Credentials
