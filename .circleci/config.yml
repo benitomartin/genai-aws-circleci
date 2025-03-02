@@ -11,14 +11,20 @@ jobs:
       - image: cimg/python:3.11
     steps:
       - checkout  # Checkout the code from the repository
+  
+     # Use python orb to set up the environment properly
+      - python/install-packages:
+          pkg-manager: pip
+          packages:
+            - uv
 
       - aws-cli/setup:
           profile_name: default
       - sam/install  # Use the SAM orb to install SAM CLI
       
-      - run:
-          name: Install uv
-          command: pip install uv  # Install uv package
+      # - run:
+      #     name: Install uv
+      #     command: pip install uv  # Install uv package
 
       - run:
           name: Install the project
