@@ -3,10 +3,10 @@ name: Deploy to AWS using SAM
 on:
   push:
     branches:
-      - test  # Trigger deployment on push to the main branch
+      - main  # Trigger deployment on push to the main branch
 
 jobs:
-  deploy:
+  build-deploy:
     runs-on: ubuntu-latest
 
     steps:

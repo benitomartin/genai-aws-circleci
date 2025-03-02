@@ -1,6 +1,5 @@
 import boto3
 import json
-import os
 from fastapi import HTTPException
 from botocore.exceptions import ClientError
 
@@ -8,9 +7,16 @@ def retrieve_secret(secret_name: str, region_name: str = "eu-central-1"):
     """
     Retrieve a secret from AWS Secrets Manager.
 
-    :param secret_name: The name of the secret in Secrets Manager.
-    :param region_name: The AWS region where the secret is stored (default is "eu-central-1").
-    :return: The secret value if found, or raises an exception.
+    Args:
+        secret_name (str): The name of the secret in AWS Secrets Manager.
+        secret_key (str, optional): The key within the secret JSON to extract. Defaults to "OPENAI_API_KEY".
+        region_name (str, optional): The AWS region where the secret is stored. Defaults to "eu-central-1".
+
+    Returns:
+        str: The retrieved secret value.
+
+    Raises:
+        RuntimeError: If retrieval from Secrets Manager fails or the secret is invalid.
     """
     try:
         # Create a Secrets Manager client
@@ -19,15 +25,12 @@ def retrieve_secret(secret_name: str, region_name: str = "eu-central-1"):
 
         # Get the secret value
         get_secret_value_response = client.get_secret_value(SecretId=secret_name)
-        # print(get_secret_value_response)
+
         # Check if the secret is a string or binary and process accordingly
         if 'SecretString' in get_secret_value_response:
             secret = get_secret_value_response['SecretString']
-            # print(secret)
 
             secret_dict = json.loads(secret)
-            # print(secret_dict.get("OPENAI_API_KEY"))
-            # print("Hello")
 
             return secret_dict.get("OPENAI_API_KEY")
         else:
