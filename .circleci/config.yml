@@ -1,58 +1,57 @@
-# version: 2.1
+version: 2.1
 
-# orbs:
-#   aws-cli: circleci/aws-cli@3.1
+executors:
+  python-executor:
+    docker:
+      - image: circleci/python:3.11  # Use a Docker image with Python 3.11
+    working_directory: ~/repo  # Set the working directory to the repository
 
-# jobs:
-#   test:
-#     docker:
-#       - image: cimg/python:3.9
-#     steps:
-#       - checkout
-#       - restore_cache:
-#           keys:
-#             - v1-deps-{{ .Branch }}-{{ checksum "requirements.txt" }}
-#             - v1-deps-{{ .Branch }}
-#       - run:
-#           name: Install Dependencies
-#           command: |
-#             python -m venv venv
-#             . venv/bin/activate
-#             pip install -r requirements.txt
-#       - save_cache:
-#           key: v1-deps-{{ .Branch }}-{{ checksum "requirements.txt" }}
-#           paths:
-#             - "venv"
-#       - run:
-#           name: Run Tests
-#           command: |
-#             . venv/bin/activate
-#             pytest
+jobs:
+  build-deploy:
+    executor: python-executor
+    steps:
+      - checkout  # Checkout the code from the repository
 
-#   deploy:
-#     docker:
-#       - image: cimg/python:3.9
-#     steps:
-#       - checkout
-#       - aws-cli/setup
-#       - run:
-#           name: Deploy to Lambda
-#           command: |
-#             pip install --target ./package -r requirements.txt
-#             cd package
-#             zip -r ../lambda_function.zip .
-#             cd ..
-#             zip -g lambda_function.zip -r app
-#             aws lambda update-function-code --function-name ${AWS_LAMBDA_FUNCTION_NAME} --zip-file fileb://lambda_function.zip
+      - run:
+          name: Install uv
+          command: pip install uv  # Install uv package
 
-# workflows:
-#   version: 2
-#   test-and-deploy:
-#     jobs:
-#       - test
-#       - deploy:
-#           requires:
-#             - test
-#           filters:
-#             branches:
-#               # only: main
+      - run:
+          name: Install the project
+          command: uv sync --all-extras  # Sync the project using uv
+
+      - run:
+          name: Run tests
+          command: uv run pytest  # Run pytest tests
+
+      - run:
+          name: Set up AWS CLI
+          command: |
+            pip install awscli  # Install AWS CLI
+
+      - run:
+          name: Build Lambda Deployment Package
+          command: |
+            chmod +x build-sam.sh
+            ./build-sam.sh  # Execute the build script
+
+      - run:
+          name: Build with SAM
+          command: sam build  # Build with SAM
+
+      - run:
+          name: Deploy with SAM
+          command: |
+            sam deploy --stack-name sam-app --resolve-s3 --capabilities CAPABILITY_IAM --region eu-central-1  # Deploy with SAM
+
+      - run:
+          name: Output API Gateway URL
+          command: |
+            API_URL=$(aws cloudformation describe-stacks --stack-name sam-app --query "Stacks[0].Outputs[?OutputKey=='ApiUrl'].OutputValue" --output text)
+            echo "GenAI API URL: $API_URL"  # Output the API Gateway URL
+
+workflows:
+  version: 2
+  deploy:
+    jobs:
+      - build-deploy  # Trigger the build-deploy job in the workflow
