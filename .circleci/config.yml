@@ -2,7 +2,8 @@ version: 2.1
 
 orbs:
   python: circleci/python@3.0.0
-  
+  aws-cli: circleci/aws-cli@5.2.0
+
 jobs:
   build-deploy:
     docker:
@@ -22,10 +23,10 @@ jobs:
           name: Run tests
           command: uv run pytest  # Run pytest tests
 
-      - run:
-          name: Set up AWS CLI
-          command: |
-            pip install awscli  # Install AWS CLI
+      # - run:
+      #     name: Set up AWS CLI
+      #     command: |
+      #       pip install awscli  # Install AWS CLI
       
       - run:
           name: Install AWS SAM CLI
@@ -58,7 +59,7 @@ jobs:
       - run:
           name: Output API Gateway URL
           command: |
-            API_URL=$(aws cloudformation describe-stacks --stack-name sam-app -region eu-central-1)
+            API_URL=$(aws cloudformation describe-stacks --stack-name sam-app --region eu-central-1)
             echo "GenAI API URL: $API_URL"  # Output the API Gateway URL
 
 workflows:
