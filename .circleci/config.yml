@@ -16,12 +16,12 @@ jobs:
           name: Install uv
           command: curl -LsSf https://astral.sh/uv/install.sh | sh  # Install uv package
 
-      - run:
-        # Use a virtual environment to install dependencies
-          command: |
-            echo "📦 Setting up virtual environment..."
-            uv venv .venv
-            source .venv/bin/activate
+      # - run:
+      #   # Use a virtual environment to install dependencies
+      #     command: |
+      #       echo "📦 Setting up virtual environment..."
+      #       uv venv .venv
+      #       source .venv/bin/activate
 
       - run:
           name: Install the project
@@ -49,31 +49,37 @@ jobs:
             chmod +x build-sam.sh
             ./build-sam.sh  # Execute the build script
 
+      - run:
+          name: Install Python 3.11
+          command: |
+            which python3  # Check Python 3.11 installation
+            export PATH="/home/circleci/.pyenv/shims:$PATH"  # Add Python to PATH
+
       - sam/install
 
       - run:
           name: Install Python 3.11
           command: which python3
 
-      # - run:
-      #     name: Build with SAM
-      #     command: sam build  # Build with SAM
+      - run:
+          name: Build with SAM
+          command: sam build  # Build with SAM
       
-      # - run:
-      #     name: Verify AWS Credentials
-      #     command: |
-      #       aws sts get-caller-identity  # Verify AWS credentials are set up correctly
+      - run:
+          name: Verify AWS Credentials
+          command: |
+            aws sts get-caller-identity  # Verify AWS credentials are set up correctly
 
-      # - run:
-      #     name: Deploy with SAM
-      #     command: |
-      #       sam deploy --stack-name sam-app --resolve-s3 --capabilities CAPABILITY_IAM --region eu-central-1  # Deploy with SAM
+      - run:
+          name: Deploy with SAM
+          command: |
+            sam deploy --stack-name sam-app --resolve-s3 --capabilities CAPABILITY_IAM --region eu-central-1  # Deploy with SAM
 
-      # - run:
-      #     name: Output API Gateway URL
-      #     command: |
-      #       API_URL=$(aws cloudformation describe-stacks --stack-name sam-app --region eu-central-1)
-      #       echo "GenAI API URL: $API_URL"  # Output the API Gateway URL
+      - run:
+          name: Output API Gateway URL
+          command: |
+            API_URL=$(aws cloudformation describe-stacks --stack-name sam-app --region eu-central-1)
+            echo "GenAI API URL: $API_URL"  # Output the API Gateway URL
 
 workflows:
   version: 2
