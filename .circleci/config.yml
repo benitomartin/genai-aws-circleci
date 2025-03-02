@@ -17,6 +17,13 @@ jobs:
           command: curl -LsSf https://astral.sh/uv/install.sh | sh  # Install uv package
 
       - run:
+        # Use a virtual environment to install dependencies
+          command: |
+            echo "📦 Setting up virtual environment..."
+            uv venv .venv
+            source .venv/bin/activate
+
+      - run:
           name: Install the project
           command: uv sync   # Sync the project using uv
 
