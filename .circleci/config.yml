@@ -44,7 +44,7 @@ jobs:
       - run:
           name: Build with SAM
           command: sam build  # Build with SA
-          M
+      
       - run:
           name: Verify AWS Credentials
           command: |
