@@ -23,10 +23,9 @@ jobs:
           name: Run tests
           command: uv run pytest  # Run pytest tests
 
-      # - run:
-      #     name: Set up AWS CLI
-      #     command: |
-      #       pip install awscli  # Install AWS CLI
+      # Using AWS CLI orb for setup instead of manual installation
+      - aws-cli/setup:
+          profile_name: default
       
       - run:
           name: Install AWS SAM CLI
@@ -66,4 +65,5 @@ workflows:
   version: 2
   deploy:
     jobs:
-      - build-deploy  # Trigger the build-deploy job in the workflow
+      - build-deploy:
+          context: aws  # Add this to use AWS credentials from CircleCI context
