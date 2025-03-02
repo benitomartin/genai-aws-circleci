@@ -43,7 +43,12 @@ jobs:
 
       - run:
           name: Build with SAM
-          command: sam build  # Build with SAM
+          command: sam build  # Build with SA
+          M
+      - run:
+          name: Verify AWS Credentials
+          command: |
+            aws sts get-caller-identity  # Verify AWS credentials are set up correctly
 
       - run:
           name: Deploy with SAM
