@@ -4,7 +4,7 @@ executors:
   python-executor:
     docker:
       - image: circleci/python:3.11  # Use a Docker image with Python 3.11
-    working_directory: ~/repo  # Set the working directory to the repository
+    # working_directory: ~/repo  # Set the working directory to the repository
 
 jobs:
   build-deploy:
