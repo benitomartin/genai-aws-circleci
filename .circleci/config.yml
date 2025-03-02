@@ -16,7 +16,7 @@ jobs:
 
       - run:
           name: Install the project
-          command: uv sync --all-extras  # Sync the project using uv
+          command: uv sync   # Sync the project using uv
 
       - run:
           name: Run tests

@@ -37,7 +37,7 @@ Resources:
   GenAIFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ./ # Specifies that the code for this function is located in the current directory
+      CodeUri: ./
       Handler: main.handler
       Description: FastAPI GenAI service using OpenAI API
       Policies:
