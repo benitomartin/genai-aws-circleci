@@ -28,9 +28,9 @@ pip install --no-cache-dir -r requirements.txt --target ./
 
 # Clean up unnecessary files
 echo "🧹 Cleaning up package..."
-find . -name "*.pyc" -exec rm -f {} \;
-find . -name "__pycache__" -exec rm -rf {} \;
-find . -name "*.dist-info" -exec rm -rf {} \;
+rm -rf **/*.pyc  # Remove Python bytecode files
+rm -rf **/__pycache__  # Remove __pycache__ directories
+rm -rf **/*.dist-info  # Remove .dist-info directories
 
 
 # Flatten the dependencies (avoid copying the same files multiple times)
