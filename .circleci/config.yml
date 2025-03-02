@@ -26,6 +26,14 @@ jobs:
           name: Set up AWS CLI
           command: |
             pip install awscli  # Install AWS CLI
+      
+      - run:
+          name: Install AWS SAM CLI
+          command: |
+            curl -sSL https://github.com/aws/aws-sam-cli/releases/latest/download/aws-sam-cli-linux-x86_64.zip -o sam-installation.sh
+            chmod +x sam-installation.sh
+            sudo ./sam-installation.sh/install  # Install AWS SAM CLI
+
 
       - run:
           name: Build Lambda Deployment Package
@@ -45,7 +53,7 @@ jobs:
       - run:
           name: Output API Gateway URL
           command: |
-            API_URL=$(aws cloudformation describe-stacks --stack-name sam-app --query "Stacks[0].Outputs[?OutputKey=='ApiUrl'].OutputValue" --output text)
+            API_URL=$(aws cloudformation describe-stacks --stack-name sam-app)
             echo "GenAI API URL: $API_URL"  # Output the API Gateway URL
 
 workflows:
