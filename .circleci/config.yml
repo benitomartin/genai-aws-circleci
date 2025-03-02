@@ -23,6 +23,14 @@ jobs:
       - run:
           name: Install uv
           command: curl -LsSf https://astral.sh/uv/install.sh | sh  # Install uv package
+        
+      # Create symlink to python3.11
+      - run:
+          name: Set up Python symlinks
+          command: |
+            which python3.11
+            sudo ln -sf $(which python3.11) /usr/local/bin/python3.11
+            python3.11 --version
 
       - run:
           name: Install the project
