@@ -22,6 +22,7 @@ pip install -r requirements.txt --target ./
 
 # Clean up unnecessary files
 echo "🧹 Cleaning up package..."
+find . -name "*.pyc" -delete
 find . -name "__pycache__" -delete
 
 # Flatten the dependencies (avoid copying the same files multiple times)
