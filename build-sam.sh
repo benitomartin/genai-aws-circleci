@@ -22,12 +22,7 @@ pip install -r requirements.txt --target ./
 
 # Clean up unnecessary files
 echo "🧹 Cleaning up package..."
-find . -name "*.pyc" -delete
 find . -name "__pycache__" -delete
-
-# # Flatten the dependencies to ensure everything is packaged correctly for Lambda
-# echo "📦 Flattening dependencies..."
-# cp -r ./* .  # Copy the dependencies to the build directory
 
 # Flatten the dependencies (avoid copying the same files multiple times)
 echo "📦 Flattening dependencies..."
