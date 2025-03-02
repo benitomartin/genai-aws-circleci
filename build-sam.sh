@@ -19,12 +19,12 @@ cd "$BUILD_DIR"
 
 # Use a virtual environment to install dependencies
 echo "📦 Setting up virtual environment..."
-python -m venv venv
-source venv/bin/activate
+uv venv .venv
+source .venv/bin/activate
 
 # Install dependencies from requirements.txt
 echo "📦 Installing dependencies from requirements.txt..."
-pip install --no-cache-dir -r requirements.txt --target ./
+uv pip install --no-cache-dir -r requirements.txt --target ./
 
 # Clean up unnecessary files
 echo "🧹 Cleaning up package..."
