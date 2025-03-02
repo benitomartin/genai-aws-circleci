@@ -12,9 +12,9 @@ jobs:
     steps:
       - checkout  # Checkout the code from the repository
   
-      # Use python orb to set up the environment properly
-      - python/install-packages:
-          pkg-manager: pip
+      # # Use python orb to set up the environment properly
+      # - python/install-packages:
+      #     pkg-manager: pip
 
       - aws-cli/setup:
           profile_name: default
@@ -22,7 +22,7 @@ jobs:
       
       - run:
           name: Install uv
-          command: pip install uv  # Install uv package
+          command: curl -LsSf https://astral.sh/uv/install.sh | sh  # Install uv package
 
       - run:
           name: Install the project
