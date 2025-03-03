@@ -173,3 +173,7 @@ TEMPLATE_YAML.md
 .aws-sam/
 samconfig.toml
 app_test.py
+get_secret.py
+app/
+.github/
+requirements.txt

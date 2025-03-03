@@ -3,7 +3,7 @@ from fastapi import HTTPException
 from unittest.mock import patch, MagicMock
 from main import app
 import pytest
-
+import os
 
 @pytest.fixture
 def client():
@@ -23,6 +23,7 @@ def test_generate_endpoint(client):
 
     # Assert error status code
     response_data = response.json()
+    assert response.status_code == 200
     assert "response" in response_data
     assert isinstance(response_data["response"], str)
     assert len(response_data["response"]) > 0
@@ -77,3 +78,33 @@ def test_mock_client(mock_get_client):
     # Assert the mock response
     assert result == mock_response
     assert result.choices[0].message.content == "Mock response"
+
+@patch("boto3.session.Session")
+def test_get_openai_api_key_aws_environment(mock_session, client):
+    """Test retrieving API key from AWS Secrets Manager"""
+    
+    # Set up environment to simulate AWS Lambda
+    with patch.dict(os.environ, {"AWS_LAMBDA_FUNCTION_NAME": "test-function"}, clear=True):
+        
+        # Create mock for the entire boto3 session and client chain
+        mock_client = MagicMock()
+        mock_session.return_value.client.return_value = mock_client
+        
+        # Mock the get_secret_value response
+        mock_response = {
+            'SecretString': '{"OPENAI_API_KEY": "test-api-key"}'
+        }
+        mock_client.get_secret_value.return_value = mock_response
+        
+        # Call the function under test
+        from main import get_openai_api_key
+        api_key = get_openai_api_key()
+        
+        # Assertions
+        mock_session.assert_called_once()
+        mock_session.return_value.client.assert_called_with(
+            service_name='secretsmanager', 
+            region_name="eu-central-1"
+        )
+        mock_client.get_secret_value.assert_called_with(SecretId="openai/api_key")
+        assert api_key == "test-api-key"
