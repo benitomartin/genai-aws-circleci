@@ -5,7 +5,6 @@ from main import app
 import pytest
 
 
-
 @pytest.fixture
 def client():
     """Fixture for FastAPI test client"""

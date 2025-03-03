@@ -37,7 +37,7 @@ Resources:
   GenAIFunction:
     Type: AWS::Serverless::Function
     Properties:
-      CodeUri: ./
+      CodeUri: ./app/
       Handler: main.handler
       Description: FastAPI GenAI service using OpenAI API
       Policies:
