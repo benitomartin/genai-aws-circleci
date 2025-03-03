@@ -64,7 +64,7 @@ Resources:
           Type: Api
           Properties:
             RestApiId: !Ref GenAIApi
-            Path: /{proxy+}
+            Path: /generate
             Method: ANY
 
 Outputs:
