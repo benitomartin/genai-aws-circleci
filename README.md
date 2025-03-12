@@ -1,8 +1,10 @@
-# FastAPI GenAI Serverless API
+# Building a serverless GenAI API with FastAPI, AWS, and CircleCI
 
 ![Image](https://github.com/user-attachments/assets/ebda21bc-fa26-49e3-bfc1-039e9ca2dd18)
 
 This project provides a serverless API for generating AI responses using OpenAI's API. It leverages FastAPI for the web framework, AWS Lambda an API Gateway for serverless deployment, and CircleCI for continuous integration and deployment.
+
+The project has been developed as part of the following  [blog](https://circleci.com/blog/building-a-serverless-genai-api/)
 
 ## Project Structure
 
